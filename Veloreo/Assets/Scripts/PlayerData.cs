@@ -8,6 +8,13 @@ using UnityEngine;
 /// </summary>
 public class PlayerData : MonoBehaviour
 {
+    /// <summary>
+    /// onDeath is called when the player runs out of health; other classes can
+    /// subscribe listeners to it to do things when that happens.
+    /// </summary>
+    public delegate void GameStateEvent();
+    public event GameStateEvent onDeath;
+
     // currentHealth should always be non-negative
     private int currentHealth;
 
@@ -16,12 +23,20 @@ public class PlayerData : MonoBehaviour
     //// Public methods
 
     /// <summary>
-    /// Do damage to the player and update their health accordingly. 
+    /// Do damage to the player and update their health accordingly. If the player's
+    /// health drops to zero, the functions subscribed to onDeath are called.
     /// </summary>
     /// <param name="damage">The amount to lower the player's health by</param>
     public void doDamage(int damage)
     {
-        currentHealth = Mathf.Max(currentHealth - damage, 0);
+        if (currentHealth > 0)
+        {
+            currentHealth = Mathf.Max(currentHealth - damage, 0);
+            if (currentHealth == 0)
+            {
+                onDeath?.Invoke(); //apparently this lets it only happen if it's not null
+            }
+        }
     }
 
     //// Observers
