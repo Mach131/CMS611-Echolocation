@@ -10,6 +10,10 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
     private float speed = 1;
+    [SerializeField]
+    private float wallAdjustmentFactor = 0.1f;
+    [SerializeField]
+    private float collisionPauseTime = 0.5f;
 
     private bool canMove;
     private float moveEnableTimer;
@@ -81,6 +85,11 @@ public class PlayerMovement : MonoBehaviour
         if (wall != null)
         {
             //hit a wall
+
+            //change health, i-frames
+            disableMovement(collisionPauseTime);
+            Vector3 pushback = getPushbackDirection(wall);
+            transform.position += pushback * wallAdjustmentFactor;
         }
     }
 
@@ -94,5 +103,35 @@ public class PlayerMovement : MonoBehaviour
         float yAxis = Input.GetAxis("Vertical");
 
         return new Vector2(xAxis, yAxis).normalized;
+    }
+    
+    /// <summary>
+    /// Determines which direction is away from a wall. Prioritizes perpendicular directions
+    /// if the wall's orientation is horizontal or vertical.
+    /// </summary>
+    /// <param name="wall">The wall to move away from</param>
+    /// <returns>A normalized vector indicating a direction moving away from the wall</returns>
+    private Vector2 getPushbackDirection(Wall wall)
+    {
+        Vector3 wallPosition = wall.transform.position;
+        Vector3 playerPosition = transform.position;
+
+        float xDelta = playerPosition.x - wallPosition.x;
+        float yDelta = playerPosition.y - wallPosition.y;
+
+        switch (wall.getOrientation())
+        {
+            case Wall.Orientation.horizontal:
+                return new Vector2(0, 1) * Mathf.Sign(yDelta);
+
+            case Wall.Orientation.vertical:
+                return new Vector2(1, 0) * Mathf.Sign(xDelta);
+
+            case Wall.Orientation.square:
+                return new Vector2(xDelta, yDelta).normalized;
+
+            default:
+                throw new System.Exception("how did i get here");
+        }
     }
 }
