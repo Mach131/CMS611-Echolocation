@@ -12,6 +12,22 @@ public class Wall : MonoBehaviour
     public Color normalColor;
     public Color visibleColor;
 
+    private SpriteRenderer rend;
+
+    public delegate void VisibilityAction(bool visible);
+    private static VisibilityAction setAllVisible;
+
+    //// Static Methods
+
+    /// <summary>
+    /// Change the visibility of all active wall objects.
+    /// </summary>
+    /// <param name="visible">Whether or not walls should be visible on a black background</param>
+    public static void setVisibility(bool visible)
+    {
+        setAllVisible?.Invoke(visible); //calls if it is not null
+    }
+
     //// Observers
     
     public enum Orientation { horizontal, vertical, square };
@@ -42,7 +58,26 @@ public class Wall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SpriteRenderer rend = GetComponent<SpriteRenderer>();
-        rend.color = debugVisibility ? visibleColor : normalColor;
+        rend = GetComponent<SpriteRenderer>();
+        setLocalVisibility(debugVisibility);
+    }
+
+    /// <summary>
+    /// Sets the visibility of an individual wall object.
+    /// </summary>
+    /// <param name="visible">Whether or not the wall should be visible on a black background</param>
+    private void setLocalVisibility(bool visible)
+    {
+        rend.color = visible ? visibleColor : normalColor;
+    }
+
+    // Add visibility method to static delegate
+    private void OnEnable()
+    {
+        Wall.setAllVisible += setLocalVisibility;
+    }
+    private void OnDisable()
+    {
+        Wall.setAllVisible -= setLocalVisibility;
     }
 }

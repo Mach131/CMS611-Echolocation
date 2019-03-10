@@ -86,8 +86,9 @@ public class PlayerMovement : MonoBehaviour
         {
             //hit a wall
 
-            //TODO: change health, i-frames
+            //TODO: change health, i-frames?
 
+            //push the player back a bit so they're not just stuck in the wall
             disableMovement(collisionPauseTime);
             Vector3 pushback = getPushbackDirection(wall);
             transform.position += pushback * wallAdjustmentFactor;
