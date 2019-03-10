@@ -24,10 +24,18 @@ public class PlayerMovement : MonoBehaviour
     // Called every frame
     private void Update()
     {
-        //check for wall here
-
         Vector3 displacement = getInputDirection() * timeAdjustedSpeed;
         transform.position += displacement;
+    }
+
+    // Called when entering a 2D collider
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Wall wall = collision.gameObject.GetComponent<Wall>();
+        if (wall != null)
+        {
+            //hit a wall
+        }
     }
 
     /// <summary>
