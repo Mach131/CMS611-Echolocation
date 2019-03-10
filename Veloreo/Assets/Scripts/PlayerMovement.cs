@@ -38,7 +38,6 @@ public class PlayerMovement : MonoBehaviour
     {
         float xAxis = Input.GetAxis("Horizontal");
         float yAxis = Input.GetAxis("Vertical");
-        Debug.Log(xAxis);
 
         return new Vector2(xAxis, yAxis).normalized;
     }
