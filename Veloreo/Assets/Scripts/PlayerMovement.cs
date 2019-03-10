@@ -11,6 +11,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float speed = 1;
 
+    private bool canMove;
+    private float moveEnableTimer;
+
     private float timeAdjustedSpeed
     {
         get
@@ -19,13 +22,56 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Prevent the player from moving until enableMovement is called.
+    /// </summary>
+    public void disableMovement()
+    {
+        disableMovement(Mathf.Infinity);
+    }
+
+    /// <summary>
+    /// Prevent the player from moving for a certain amount of time.
+    /// </summary>
+    /// <param name="time">How many seconds to wait before automatically re-enabling movement</param>
+    public void disableMovement(float time)
+    {
+        canMove = false;
+        moveEnableTimer = time;
+    }
+
+    /// <summary>
+    /// Allow the player to move again after having disabled their movement.
+    /// </summary>
+    public void enableMovement()
+    {
+        canMove = true;
+    }
+
+
     //// Private methods
+
+    // Called before first update
+    private void Start()
+    {
+        canMove = true;
+    }
 
     // Called every frame
     private void Update()
     {
-        Vector3 displacement = getInputDirection() * timeAdjustedSpeed;
-        transform.position += displacement;
+        if (canMove)
+        {
+            Vector3 displacement = getInputDirection() * timeAdjustedSpeed;
+            transform.position += displacement;
+        } else
+        {
+            moveEnableTimer -= Time.deltaTime;
+            if (moveEnableTimer <= 0)
+            {
+                canMove = true;
+            }
+        }
     }
 
     // Called when entering a 2D collider
