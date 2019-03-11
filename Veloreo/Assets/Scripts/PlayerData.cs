@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// More of a public interface for the player object; holds state about their health
@@ -14,11 +15,12 @@ public class PlayerData : MonoBehaviour
     /// </summary>
     public delegate void GameStateEvent();
     public event GameStateEvent onDeath;
+    public string nextSceneName;
 
     // currentHealth should always be non-negative
     private int currentHealth;
 
-    private const int maximumHealth = 4;
+    private const int maximumHealth = 5;
 
     //// Public methods
 
@@ -35,6 +37,7 @@ public class PlayerData : MonoBehaviour
             if (currentHealth == 0)
             {
                 onDeath?.Invoke(); //apparently this lets it only happen if it's not null
+                SceneManager.LoadScene(nextSceneName);
             }
         }
     }

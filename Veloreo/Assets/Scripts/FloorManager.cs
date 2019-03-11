@@ -5,10 +5,12 @@ using UnityEngine;
 public class FloorManager : MonoBehaviour
 {
     public GameObject floorTile;
+    public GameObject player;
     public int boardSize;
-    public float waveHeight = 2f;
+    public float waveHeight = 3f;
     public float waveSpeed = .01f;
     public float waveDuration = 4f;
+    public float betweenWaves = .3f;
 
     private List<GameObject> floorTiles = new List<GameObject>();
     private List<Wave> waves = new List<Wave>();
@@ -40,7 +42,7 @@ public class FloorManager : MonoBehaviour
 
         public Vector3 getOrigin()
         {
-            return new Vector3(origin.x, origin.y, 0f);
+            return new Vector3(origin.x, origin.y, .6f);
         }
     }
     
@@ -59,7 +61,7 @@ public class FloorManager : MonoBehaviour
         {
             for (int j = -size; j <= size; j++)
             {
-                Vector3 position = new Vector3(i, 0, j);
+                Vector3 position = new Vector3(i*.5f, j*.5f, .6f);
                 GameObject tile = Instantiate(floorTile, position, Quaternion.identity);
                 tile.name = "Tile " + i + ", " + j;
                 tile.transform.parent = transform;
@@ -72,8 +74,23 @@ public class FloorManager : MonoBehaviour
     {
         Wave w = new Wave(position);
         waves.Add(w);
+
+        yield return new WaitForSeconds(betweenWaves);
+        Wave w2 = new Wave(position);
+        waves.Add(w2);
+
+        //yield return new WaitForSeconds(betweenWaves);
+        //Wave w3 = new Wave(position);
+        //waves.Add(w3);
+
         yield return new WaitForSeconds(waveDuration);
         waves.Remove(w);
+
+        yield return new WaitForSeconds(betweenWaves);
+        waves.Remove(w2);
+
+        //yield return new WaitForSeconds(betweenWaves);
+        //waves.Remove(w3);
     }
 
     /// <summary>
@@ -85,15 +102,16 @@ public class FloorManager : MonoBehaviour
         {
 
             float x = t.transform.position.x;
-            float z = t.transform.position.z;
-            float y = 0;
+            float y = t.transform.position.y;
+            float z = 1;
 
             foreach (Wave w in waves)
             {
                 if (isWaving(t, w))
                 {
                     w.incrementTime(waveSpeed * Time.deltaTime);
-                    y += waveHeight * w.WaveFunction(x, z);
+                    Vector3 waveOrigin = w.getOrigin();
+                    z += waveHeight * w.WaveFunction(x - waveOrigin.x, y - waveOrigin.y);
                 }
             }
 
@@ -124,7 +142,9 @@ public class FloorManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine(CreateWave(Vector2.zero));
+            Vector3 playerPos3 = player.transform.position;
+            Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
+            StartCoroutine(CreateWave(playerPos2));
         }
 
         UpdateFloorTiles();
