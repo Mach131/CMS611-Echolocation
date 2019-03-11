@@ -1,6 +1,8 @@
 # CMS611-Echolocation
 Project 3
 Veloreo
-FIRST - Darius Bopp
-Shane
-Pablo
+Darius Bopp
+Shane Lyons
+Pablo Villalobos
+Emily Mattlin
+Temi Taylor
