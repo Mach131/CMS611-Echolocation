@@ -923,11 +923,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1667557654944102029, guid: bf8dcf22e383a0b4c9c87818262f28dd,
-        type: 3}
-      propertyPath: nextSceneName
-      value: FailScene
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf8dcf22e383a0b4c9c87818262f28dd, type: 3}
 --- !u!1001 &528069932
@@ -1997,6 +1992,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8827106819639781835, guid: a956c78db04c80a49ac84268e8ecd95e,
+        type: 3}
+      propertyPath: debugVisibility
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a956c78db04c80a49ac84268e8ecd95e, type: 3}
