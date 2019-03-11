@@ -118,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
         disableMovement(collisionPauseTime);
         Vector3 pushback = getPushbackDirection(wall);
         transform.position += pushback * wallAdjustmentFactor;
+        GetComponent<PlayerData>().doDamage(1);
     }
 
     /// <summary>
@@ -141,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
         disableMovement(collisionPauseTime);
         Vector3 pushback = getGuardPushback(guard);
         transform.position = guard.transform.position - guardAdjusmentFactor * pushback;
+        GetComponent<PlayerData>().doDamage(1);
     }
 
     /// <summary>
