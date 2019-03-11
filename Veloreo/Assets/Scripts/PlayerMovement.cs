@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float wallAdjustmentFactor = 0.1f;
     [SerializeField]
+    private float guardAdjusmentFactor = 1.05f;
+    [SerializeField]
     private float collisionPauseTime = 0.5f;
 
     private bool canMove;
@@ -95,7 +97,12 @@ public class PlayerMovement : MonoBehaviour
         {
             handleGoalCollision(goal);
         }
-        
+
+        Guard guard = collision.gameObject.GetComponent<Guard>();
+        if (guard != null)
+        {
+            handleGuardCollision(guard);
+        }
     }
 
     /// <summary>
@@ -123,6 +130,39 @@ public class PlayerMovement : MonoBehaviour
         //TODO: might be good to have some sort of pause/results popup before transition
 
         SceneManager.LoadScene(goal.getNextScene());
+    }
+
+    /// <summary>
+    /// Handle collision with a guard.
+    /// </summary>
+    /// <param name="guard">Guard that is collided with.</param>
+    private void handleGuardCollision(Guard guard)
+    {
+        disableMovement(collisionPauseTime);
+        Vector3 pushback = getGuardPushback(guard);
+        transform.position = guard.transform.position - guardAdjusmentFactor * pushback;
+    }
+
+    /// <summary>
+    /// Handle intserction with a guard.
+    /// </summary>
+    /// <param name="guard">Guard that is collided with.</param>
+    /// <returns></returns>
+    private Vector3 getGuardPushback(Guard guard)
+    {
+        // find the direction between the center of the two circles.
+        float xDir = guard.transform.position.x - transform.position.x;
+        float yDir = guard.transform.position.y - transform.position.y;
+        Vector2 dir = new Vector2(xDir, yDir).normalized;
+
+        // find distance to stop intersection
+        CircleCollider2D playerCollider = GetComponent<CircleCollider2D>();
+        CircleCollider2D guardCollider = guard.GetComponent<CircleCollider2D>();
+        // this relies on the sprites being a circle 
+
+        // TODO: generalize collison more
+        float distance = (playerCollider.radius + guardCollider.radius) * transform.localScale.x;
+        return distance * dir;
     }
 
     /// <summary>
