@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Controls the player's movements, including reading inputs as well as collisions and
@@ -81,18 +82,47 @@ public class PlayerMovement : MonoBehaviour
     // Called when entering a 2D collider
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //hitting a wall
         Wall wall = collision.gameObject.GetComponent<Wall>();
         if (wall != null)
         {
-            //hit a wall
-
-            //TODO: change health, i-frames?
-
-            //push the player back a bit so they're not just stuck in the wall
-            disableMovement(collisionPauseTime);
-            Vector3 pushback = getPushbackDirection(wall);
-            transform.position += pushback * wallAdjustmentFactor;
+            handleWallCollision(wall);
         }
+
+        //hitting a goal
+        Goal goal = collision.gameObject.GetComponent<Goal>();
+        if (goal != null)
+        {
+            handleGoalCollision(goal);
+        }
+        
+    }
+
+    /// <summary>
+    /// Handle collision with a wall; currently pushes the player back a bit and stops
+    /// them from moving for a bit, stopping them from getting stuck in a wall.
+    /// </summary>
+    /// <param name="wall">The wall that the player came in contact with</param>
+    private void handleWallCollision(Wall wall)
+    {
+        //TODO: change health, i-frames?
+
+        //push the player back a bit so they're not just stuck in the wall
+        disableMovement(collisionPauseTime);
+        Vector3 pushback = getPushbackDirection(wall);
+        transform.position += pushback * wallAdjustmentFactor;
+    }
+
+    /// <summary>
+    /// Handle collision with a goal; currently just transitions to the scene specified by
+    /// the goal object.
+    /// </summary>
+    /// <param name="goal">The goal that the player came in contact with</param>
+    private void handleGoalCollision(Goal goal)
+    {
+        //TODO: might be good to have some sort of pause/results popup before transition
+
+        SceneManager.LoadScene(goal.getNextScene());
     }
 
     /// <summary>
