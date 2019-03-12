@@ -1748,6 +1748,11 @@ PrefabInstance:
       propertyPath: waveDuration
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8048361106834808073, guid: 914df8bd32f966742b7a9e37a3242bff,
+        type: 3}
+      propertyPath: cooldownSeconds
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 914df8bd32f966742b7a9e37a3242bff, type: 3}
 --- !u!1001 &1712918963

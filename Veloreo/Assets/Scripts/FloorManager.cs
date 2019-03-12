@@ -7,13 +7,16 @@ public class FloorManager : MonoBehaviour
     public GameObject floorTile;
     public GameObject player;
     public int boardSize;
-    public float waveHeight = 3f;
-    public float waveSpeed = .01f;
-    public float waveDuration = 4f;
+    public const float defaultWaveHeight = 1f;
+    public const float defaultWaveSpeed = .02f;
+    public const float defaultWaveDuration = 5f;
     public float betweenWaves = .3f;
+    public float distanceFrom2D = .6f;
+    public float cooldownLengthSeconds = 2f;
 
     private List<GameObject> floorTiles = new List<GameObject>();
     private List<Wave> waves = new List<Wave>();
+    private float cooldownTimer = 0f;
 
     /// <summary>
     /// Describes an wave on the floor
@@ -22,11 +25,17 @@ public class FloorManager : MonoBehaviour
     {
         private float time = 0f;
         private Vector2 origin;
-        public const float scale = 6.3f;
+        private float waveHeight = 1f;
+        private float waveSpeed = .02f;
+        private float waveDuration = 5f;
+        //public const float scale = 6.3f;
 
-        public Wave(Vector2 position)
+        public Wave(Vector2 position, float height, float speed, float duration)
         {
             this.origin = position;
+            this.waveHeight = height;
+            this.waveSpeed = speed;
+            this.waveDuration = duration;
         }
 
         public void incrementTime(float delta)
@@ -34,15 +43,32 @@ public class FloorManager : MonoBehaviour
             this.time += delta;
         }
 
-        public float WaveFunction(float x, float z)
+        public float WaveFunction(float x, float y)
         {
-            float distFromRipple = Mathf.Abs(this.time - Mathf.Sqrt(x * x + z * z));
+            float distFromRipple = Mathf.Abs(this.time - Mathf.Sqrt(x * x + y * y));
             return 1 / Mathf.Pow((1 + distFromRipple), 3);
         }
 
         public Vector3 getOrigin()
         {
-            return new Vector3(origin.x, origin.y, .6f);
+            //Trying 0 here, may be broken
+            //Currently doesnt break anything, it'll stay.
+            return new Vector3(origin.x, origin.y, 0);
+        }
+
+        public float getHeight()
+        {
+            return this.waveHeight;
+        }
+
+        public float getSpeed()
+        {
+            return this.waveSpeed;
+        }
+
+        public float getDuration()
+        {
+            return this.waveDuration;
         }
     }
     
@@ -61,7 +87,7 @@ public class FloorManager : MonoBehaviour
         {
             for (int j = -size; j <= size; j++)
             {
-                Vector3 position = new Vector3(i*.5f, j*.5f, .6f);
+                Vector3 position = new Vector3(i*.5f, j*.5f, distanceFrom2D);
                 GameObject tile = Instantiate(floorTile, position, Quaternion.identity);
                 tile.name = "Tile " + i + ", " + j;
                 tile.transform.parent = transform;
@@ -70,27 +96,21 @@ public class FloorManager : MonoBehaviour
         }
     }
 
-    IEnumerator CreateWave(Vector2 position)
+    IEnumerator CreateWave(Vector2 position, float height = defaultWaveHeight, float speed = defaultWaveSpeed, float duration = defaultWaveDuration)
     {
-        Wave w = new Wave(position);
+        Wave w = new Wave(position, height, speed, duration);
         waves.Add(w);
 
         yield return new WaitForSeconds(betweenWaves);
-        Wave w2 = new Wave(position);
+        Wave w2 = new Wave(position, height, speed, duration);
         waves.Add(w2);
 
-        //yield return new WaitForSeconds(betweenWaves);
-        //Wave w3 = new Wave(position);
-        //waves.Add(w3);
-
-        yield return new WaitForSeconds(waveDuration);
+        yield return new WaitForSeconds(w.getDuration());
         waves.Remove(w);
 
-        yield return new WaitForSeconds(betweenWaves);
+        yield return new WaitForSeconds(w2.getDuration());
         waves.Remove(w2);
 
-        //yield return new WaitForSeconds(betweenWaves);
-        //waves.Remove(w3);
     }
 
     /// <summary>
@@ -103,15 +123,15 @@ public class FloorManager : MonoBehaviour
 
             float x = t.transform.position.x;
             float y = t.transform.position.y;
-            float z = 1;
+            float z = distanceFrom2D;
 
             foreach (Wave w in waves)
             {
                 if (isWaving(t, w))
                 {
-                    w.incrementTime(waveSpeed * Time.deltaTime);
+                    w.incrementTime(w.getSpeed() * Time.deltaTime);
                     Vector3 waveOrigin = w.getOrigin();
-                    z += waveHeight * w.WaveFunction(x - waveOrigin.x, y - waveOrigin.y);
+                    z += w.getHeight() * w.WaveFunction(x - waveOrigin.x, y - waveOrigin.y);
                 }
             }
 
@@ -130,7 +150,15 @@ public class FloorManager : MonoBehaviour
         int layerMask = 1 << 9;
         RaycastHit hit;
         Vector3 vecToOrigin = wave.getOrigin() - tile.transform.position;
-        if (Physics.Raycast(tile.transform.position, wave.getOrigin() - tile.transform.position, out hit, vecToOrigin.magnitude, layerMask))
+        Vector3 originToTile = tile.transform.position - wave.getOrigin();
+
+        //if (Physics.Raycast(tile.transform.position, wave.getOrigin() - tile.transform.position, out hit, vecToOrigin.magnitude, layerMask))
+        //{
+        //    return false;
+        //}
+
+        //origin, direction, out hit, distance, layermask
+        if (Physics.Raycast(wave.getOrigin(), originToTile, out hit, originToTile.magnitude, layerMask))
         {
             return false;
         }
@@ -140,13 +168,14 @@ public class FloorManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && cooldownTimer <= 0)
         {
+            cooldownTimer = cooldownLengthSeconds;
             Vector3 playerPos3 = player.transform.position;
             Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
             StartCoroutine(CreateWave(playerPos2));
         }
-
+        cooldownTimer -= Time.deltaTime;
         UpdateFloorTiles();
     }
 }
