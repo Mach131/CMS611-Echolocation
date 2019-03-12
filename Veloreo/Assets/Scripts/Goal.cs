@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class Goal : MonoBehaviour
 {
     [SerializeField]
-    private string nextSceneName;
+    private string nextSceneName = "";
 
     /// <summary>
     /// Get the scene that this goal transfers the player to.
