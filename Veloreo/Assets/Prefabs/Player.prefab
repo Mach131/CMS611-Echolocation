@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb7b532a6a64ae942ada3e5a97609408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: FailScene
+  failSceneName: FailScene
 --- !u!114 &1667557654944102024
 MonoBehaviour:
   m_ObjectHideFlags: 0

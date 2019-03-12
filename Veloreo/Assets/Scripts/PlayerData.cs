@@ -15,7 +15,9 @@ public class PlayerData : MonoBehaviour
     /// </summary>
     public delegate void GameStateEvent();
     public event GameStateEvent onDeath;
-    public string nextSceneName;
+
+    [SerializeField]
+    private string failSceneName = "";
 
     // currentHealth should always be non-negative
     private int currentHealth;
@@ -37,7 +39,7 @@ public class PlayerData : MonoBehaviour
             if (currentHealth == 0)
             {
                 onDeath?.Invoke(); //apparently this lets it only happen if it's not null
-                SceneManager.LoadScene(nextSceneName);
+                SceneManager.LoadScene(failSceneName);
             }
         }
     }
