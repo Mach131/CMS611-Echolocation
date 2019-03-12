@@ -9,39 +9,34 @@ public class Guard : MonoBehaviour
 {
     private SpriteRenderer sprite;
     private float timeWaiting;
-    private float revealTime;
     [SerializeField]
-    private float hideTime = .25f;
+    private float hideTime = .3f;
 
     private void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
         sprite.enabled = false;
-        timeWaiting = 1f;
-        revealTime = 0f;
+        // janky way to start them off hidden
+        timeWaiting = hideTime + 1f;
     }
 
-    public void flash(float waitTime)
+    public void Flash()
     {
         timeWaiting = 0;
-        revealTime = waitTime;
+        sprite.enabled = true;
     }
 
     private void updateVisibility()
     {
-        if (timeWaiting < revealTime + hideTime)
+        if (timeWaiting < hideTime)
         {
             timeWaiting += Time.deltaTime;
         }
-        if (timeWaiting >= revealTime + hideTime)
+
+        if (timeWaiting >= hideTime)
         {
             sprite.enabled = false;
         }
-        else if (timeWaiting >= revealTime)
-        { 
-            sprite.enabled = true;
-        }
-        
     }
 
     private void Update()

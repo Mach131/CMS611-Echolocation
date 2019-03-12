@@ -29,7 +29,7 @@ public class FloorManager : MonoBehaviour
         private float waveHeight = 1f;
         private float waveSpeed = .02f;
         private float waveDuration = 5f;
-        public const float scale = 6.3f;
+        public const float scale = 50.4f;
 
         public Wave(Vector2 position, float height, float speed, float duration)
         {
@@ -70,6 +70,11 @@ public class FloorManager : MonoBehaviour
         public float getDuration()
         {
             return this.waveDuration;
+        }
+
+        public float getTime()
+        {
+            return this.time;
         }
     }
     
@@ -179,9 +184,12 @@ public class FloorManager : MonoBehaviour
                 if (isRevealed(guard, wave))
                 {
                     Vector2 guardToOrigin = wave.getOrigin() - guard.transform.position;
-                    // TODO: figure out how to make this coincide with the  wave on the ground
-                    float wait = wave.getSpeed() / guardToOrigin.magnitude;
-                    guard.GetComponent<Guard>().flash(wait);
+                    float distance = wave.getTime() / (Wave.scale * wave.getSpeed());
+                    // constrain how long to flash so character doesn't stay visible forever
+                    if (distance >= guardToOrigin.magnitude && distance <= 1.25*guardToOrigin.magnitude)
+                    {
+                        guard.GetComponent<Guard>().Flash();
+                    }
                 }
             }
         }
