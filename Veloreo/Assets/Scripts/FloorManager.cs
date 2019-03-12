@@ -15,6 +15,7 @@ public class FloorManager : MonoBehaviour
     public float cooldownLengthSeconds = 2f;
 
     private List<GameObject> floorTiles = new List<GameObject>();
+    private Guard[] guards;
     private List<Wave> waves = new List<Wave>();
     private float cooldownTimer = 0f;
 
@@ -28,7 +29,7 @@ public class FloorManager : MonoBehaviour
         private float waveHeight = 1f;
         private float waveSpeed = .02f;
         private float waveDuration = 5f;
-        //public const float scale = 6.3f;
+        public const float scale = 6.3f;
 
         public Wave(Vector2 position, float height, float speed, float duration)
         {
@@ -75,6 +76,7 @@ public class FloorManager : MonoBehaviour
     void Start()
     {
         BuildFloor(boardSize);
+        guards = FindObjectsOfType<Guard>();
     }
 
     /// <summary>
@@ -165,6 +167,44 @@ public class FloorManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Makes any guard that is hit by the wave visible.
+    /// </summary>
+    void UpdateGuardReveals()
+    {
+        foreach (Guard guard in guards)
+        {
+            foreach (Wave wave in waves)
+            {
+                if (isRevealed(guard, wave))
+                {
+                    Vector2 guardToOrigin = wave.getOrigin() - guard.transform.position;
+                    // TODO: figure out how to make this coincide with the  wave on the ground
+                    float wait = wave.getSpeed() / guardToOrigin.magnitude;
+                    guard.GetComponent<Guard>().flash(wait);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Determines if a guard should be affected by a wave, or if it is blocked by a wall.
+    /// </summary>
+    /// <param name="guard">The floor tile in question</param>
+    /// <param name="wave">The wave affecting the guard</param>
+    /// <returns>Whether or not the guard should be revealed by the wave</returns>
+    bool isRevealed(Guard guard, Wave wave)
+    {
+        Vector2 origin = wave.getOrigin();
+        Vector2 guardToOrigin = origin - (Vector2) guard.transform.position;
+        // so that we don't collide with ourselves
+        float sigma = .05f;
+        float minDepth = guard.GetComponent<CircleCollider2D>().radius * guard.transform.localScale.x + sigma;
+
+        Vector2 offset = (Vector2) guard.transform.position + minDepth * guardToOrigin.normalized;
+        RaycastHit2D hit = Physics2D.Linecast(offset, origin);
+        return (hit.collider == player.GetComponent<CircleCollider2D>());
+    }
 
     void Update()
     {
@@ -177,5 +217,6 @@ public class FloorManager : MonoBehaviour
         }
         cooldownTimer -= Time.deltaTime;
         UpdateFloorTiles();
+        UpdateGuardReveals();
     }
 }
