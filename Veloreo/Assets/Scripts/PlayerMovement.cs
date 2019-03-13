@@ -116,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
 
         //push the player back a bit so they're not just stuck in the wall
         disableMovement(collisionPauseTime);
-        Vector3 pushback = getPushbackDirection(wall);
+        Vector3 pushback = getWallPushbackDirection(wall);
         transform.position += pushback * wallAdjustmentFactor;
         GetComponent<PlayerData>().doDamage(1);
     }
@@ -178,6 +178,8 @@ public class PlayerMovement : MonoBehaviour
 
         return new Vector2(xAxis, yAxis).normalized;
     }
+
+    //there's probably a way to combine the next three functions
     
     /// <summary>
     /// Determines which direction is away from a wall. Prioritizes perpendicular directions
@@ -185,10 +187,10 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="wall">The wall to move away from</param>
     /// <returns>A normalized vector indicating a direction moving away from the wall</returns>
-    private Vector2 getPushbackDirection(Wall wall)
+    private Vector2 getWallPushbackDirection(Wall wall)
     {
-        Vector3 wallPosition = wall.transform.position;
-        Vector3 playerPosition = transform.position;
+        Vector2 wallPosition = wall.transform.position;
+        Vector2 playerPosition = transform.position;
 
         float xDelta = playerPosition.x - wallPosition.x;
         float yDelta = playerPosition.y - wallPosition.y;
@@ -206,6 +208,68 @@ public class PlayerMovement : MonoBehaviour
 
             default:
                 throw new System.Exception("how did i get here");
+        }
+    }
+
+    /// <summary>
+    /// Determines the amount by which to displace the player when being pushed away from a wall.
+    /// </summary>
+    /// <param name="wall">The wall to move away from</param>
+    /// <returns>A distance from the center of the wall at which the player will not be intersecting with it,
+    /// based on the adjustment factor and the wall's orientation</returns>
+    private float getWallPushbackAmount(Wall wall)
+    {
+        Vector2 wallPosition = wall.transform.position;
+        Vector2 playerHalfSize = transform.lossyScale / 2;
+
+        float wallHalfSize = wall.getThickness() / 2;
+
+        //TODO: account for pushback adjustment factor
+
+        switch (wall.getOrientation())
+        {
+            case Wall.Orientation.horizontal:
+                return wallHalfSize + playerHalfSize.y;
+
+            case Wall.Orientation.vertical:
+                return wallHalfSize + playerHalfSize.x;
+
+            case Wall.Orientation.square:
+                //a bit of trig to find distances from center to corner
+                float wallRadius = wallHalfSize * Mathf.Sqrt(2);
+                float playerRadius = playerHalfSize.magnitude;
+                return wallRadius + playerRadius;
+
+            default:
+                throw new System.Exception("how did I get here");
+        }
+    }
+
+    /// <summary>
+    /// Determines the position from which to start calculating the player's new location after being
+    /// pushed back by a wall.
+    /// </summary>
+    /// <param name="wall">The wall to move away from</param>
+    /// <returns>A point along one of the central axes of the wall (based on its orientation) that
+    /// is also co-linear with the player's position, along the direction of their pushback</returns>
+    private Vector2 getWallPushbackOrigin(Wall wall)
+    {
+        Vector2 wallPosition = wall.transform.position; //truncates z axis
+        Vector2 playerPosition = transform.position;
+
+        switch (wall.getOrientation())
+        {
+            case Wall.Orientation.horizontal:
+                return new Vector2(playerPosition.x, wallPosition.y);
+
+            case Wall.Orientation.vertical:
+                return new Vector2(wallPosition.x, playerPosition.x);
+
+            case Wall.Orientation.square:
+                return wallPosition;
+
+            default:
+                throw new System.Exception("how did I get here");
         }
     }
 }

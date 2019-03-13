@@ -38,6 +38,12 @@ public class Wall : MonoBehaviour
     /// <returns>The size of the wall's shorter side in world space</returns>
     public float getThickness()
     {
-        return Mathf.Min(transform.lossyScale.x, transform.lossyScale.y);
+        if (getOrientation() == Orientation.horizontal)
+        {
+            return transform.lossyScale.y;
+        } else
+        {
+            return transform.lossyScale.x;
+        }
     }
 }
