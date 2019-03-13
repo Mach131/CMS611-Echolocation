@@ -8,7 +8,7 @@ using UnityEngine;
 public class Wall : MonoBehaviour
 {
     //// Observers
-    
+
     public enum Orientation { horizontal, vertical, square };
 
     /// <summary>
@@ -30,5 +30,14 @@ public class Wall : MonoBehaviour
         {
             return xScale > yScale ? Orientation.horizontal : Orientation.vertical;
         }
+    }
+
+    /// <summary>
+    /// Gets the thickness of the wall.
+    /// </summary>
+    /// <returns>The size of the wall's shorter side in world space</returns>
+    public float getThickness()
+    {
+        return Mathf.Min(transform.lossyScale.x, transform.lossyScale.y);
     }
 }
