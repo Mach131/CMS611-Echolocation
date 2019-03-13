@@ -21,8 +21,9 @@ public class PlayerData : MonoBehaviour
 
     // currentHealth should always be non-negative
     private int currentHealth;
-
     private const int maximumHealth = 5;
+
+    private HealthDisplay healthDisplay;
 
     //// Public methods
 
@@ -38,7 +39,7 @@ public class PlayerData : MonoBehaviour
             currentHealth = Mathf.Max(currentHealth - damage, 0);
 
             //change health display on canvas
-            FindObjectOfType<HealthDisplay>().changeHealthDisplay();
+            healthDisplay.changeHealthDisplay();
 
             if (currentHealth == 0)
             {
@@ -74,5 +75,6 @@ public class PlayerData : MonoBehaviour
     private void initialize()
     {
         currentHealth = maximumHealth;
+        healthDisplay = FindObjectOfType<HealthDisplay>();
     }
 }
