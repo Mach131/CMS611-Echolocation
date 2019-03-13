@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +18,9 @@ public class FloorManager : MonoBehaviour
     private Guard[] guards;
     private List<Wave> waves = new List<Wave>();
     private float cooldownTimer = 0f;
+
+    private int wavesRemaining;
+    private const int maximumWaves = 10;
 
     /// <summary>
     /// Describes an wave on the floor
@@ -82,6 +85,7 @@ public class FloorManager : MonoBehaviour
     {
         BuildFloor(boardSize);
         guards = FindObjectsOfType<Guard>();
+        wavesRemaining = maximumWaves;
     }
 
     /// <summary>
@@ -216,15 +220,17 @@ public class FloorManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && cooldownTimer <= 0)
+        if (Input.GetKeyDown(KeyCode.Space) && cooldownTimer <= 0 && wavesRemaining > 0)
         {
             cooldownTimer = cooldownLengthSeconds;
             Vector3 playerPos3 = player.transform.position;
             Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
             StartCoroutine(CreateWave(playerPos2));
+            wavesRemaining--;
         }
         cooldownTimer -= Time.deltaTime;
         UpdateFloorTiles();
         UpdateGuardReveals();
+
     }
 }
