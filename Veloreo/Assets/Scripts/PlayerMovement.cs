@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float speed = 1;
     [SerializeField]
-    private float wallAdjustmentFactor = 0.1f;
+    private float wallAdjustmentAmount = 0.1f;
     [SerializeField]
     private float guardAdjusmentFactor = 1.05f;
     [SerializeField]
@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool canMove;
     private float moveEnableTimer;
+    private Vector2 playerHalfSize;
 
     private float timeAdjustedSpeed
     {
@@ -62,6 +63,8 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         canMove = true;
+
+        playerHalfSize = GetComponent<SpriteRenderer>().sprite.bounds.extents * (Vector2) transform.lossyScale;
     }
 
     // Called every frame
@@ -116,8 +119,8 @@ public class PlayerMovement : MonoBehaviour
 
         //push the player back a bit so they're not just stuck in the wall
         disableMovement(collisionPauseTime);
-        Vector3 pushback = getWallPushbackDirection(wall);
-        transform.position += pushback * wallAdjustmentFactor;
+        Vector2 pushback = getWallPushbackDirection(wall) * getWallPushbackAmount(wall);
+        transform.position = getWallPushbackOrigin(wall) + pushback;
         GetComponent<PlayerData>().doDamage(1);
     }
 
@@ -216,11 +219,10 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="wall">The wall to move away from</param>
     /// <returns>A distance from the center of the wall at which the player will not be intersecting with it,
-    /// based on the adjustment factor and the wall's orientation</returns>
+    /// based on the adjustment amount and the wall's orientation</returns>
     private float getWallPushbackAmount(Wall wall)
     {
         Vector2 wallPosition = wall.transform.position;
-        Vector2 playerHalfSize = transform.lossyScale / 2;
 
         float wallHalfSize = wall.getThickness() / 2;
 
@@ -229,16 +231,16 @@ public class PlayerMovement : MonoBehaviour
         switch (wall.getOrientation())
         {
             case Wall.Orientation.horizontal:
-                return wallHalfSize + playerHalfSize.y;
+                return wallHalfSize + playerHalfSize.y + wallAdjustmentAmount;
 
             case Wall.Orientation.vertical:
-                return wallHalfSize + playerHalfSize.x;
+                return wallHalfSize + playerHalfSize.x + wallAdjustmentAmount;
 
             case Wall.Orientation.square:
                 //a bit of trig to find distances from center to corner
                 float wallRadius = wallHalfSize * Mathf.Sqrt(2);
                 float playerRadius = playerHalfSize.magnitude;
-                return wallRadius + playerRadius;
+                return wallRadius + playerRadius + wallAdjustmentAmount;
 
             default:
                 throw new System.Exception("how did I get here");
@@ -263,7 +265,7 @@ public class PlayerMovement : MonoBehaviour
                 return new Vector2(playerPosition.x, wallPosition.y);
 
             case Wall.Orientation.vertical:
-                return new Vector2(wallPosition.x, playerPosition.x);
+                return new Vector2(wallPosition.x, playerPosition.y);
 
             case Wall.Orientation.square:
                 return wallPosition;
