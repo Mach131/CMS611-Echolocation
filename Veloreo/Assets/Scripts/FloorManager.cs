@@ -19,6 +19,7 @@ public class FloorManager : MonoBehaviour
     private List<Wave> waves = new List<Wave>();
     private float cooldownTimer = 0f;
 
+    [SerializeField]
     private int wavesRemaining;
     private const int maximumWaves = 10;
 
