@@ -2,45 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Contains some information about a guard's state.
-/// </summary>
 public class Guard : MonoBehaviour
 {
-    private SpriteRenderer sprite;
-    private float timeWaiting;
-    [SerializeField]
-    private float hideTime = .3f;
-
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
-        sprite = GetComponent<SpriteRenderer>();
-        sprite.enabled = false;
-        // janky way to start them off hidden
-        timeWaiting = hideTime + 1f;
+        
     }
 
-    public void Flash()
+    // Update is called once per frame
+    void Update()
     {
-        timeWaiting = 0;
-        sprite.enabled = true;
-    }
-
-    private void updateVisibility()
-    {
-        if (timeWaiting < hideTime)
-        {
-            timeWaiting += Time.deltaTime;
-        }
-
-        if (timeWaiting >= hideTime)
-        {
-            sprite.enabled = false;
-        }
-    }
-
-    private void Update()
-    {
-        updateVisibility();
+        
     }
 }

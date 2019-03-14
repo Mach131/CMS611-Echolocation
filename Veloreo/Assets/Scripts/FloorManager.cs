@@ -17,6 +17,7 @@ public class FloorManager : MonoBehaviour
     private List<GameObject> floorTiles = new List<GameObject>();
     private Guard[] guards;
     private List<Wave> waves = new List<Wave>();
+    private Goal goal;
     private float cooldownTimer = 0f;
 
     [SerializeField]
@@ -86,6 +87,7 @@ public class FloorManager : MonoBehaviour
     {
         BuildFloor(boardSize);
         guards = FindObjectsOfType<Guard>();
+        goal = FindObjectOfType<Goal>();
         wavesRemaining = maximumWaves;
     }
 
@@ -186,14 +188,14 @@ public class FloorManager : MonoBehaviour
         {
             foreach (Wave wave in waves)
             {
-                if (isRevealed(guard, wave))
+                if (isRevealedGuard(guard, wave))
                 {
                     Vector2 guardToOrigin = wave.getOrigin() - guard.transform.position;
                     float distance = wave.getTime() / (Wave.scale * wave.getSpeed());
                     // constrain how long to flash so character doesn't stay visible forever
                     if (distance >= guardToOrigin.magnitude && distance <= 1.25*guardToOrigin.magnitude)
                     {
-                        guard.GetComponent<Guard>().Flash();
+                        guard.GetComponent<HiddenObject>().Flash();
                     }
                 }
             }
@@ -206,7 +208,7 @@ public class FloorManager : MonoBehaviour
     /// <param name="guard">The floor tile in question</param>
     /// <param name="wave">The wave affecting the guard</param>
     /// <returns>Whether or not the guard should be revealed by the wave</returns>
-    bool isRevealed(Guard guard, Wave wave)
+    bool isRevealedGuard(Guard guard, Wave wave)
     {
         Vector2 origin = wave.getOrigin();
         Vector2 guardToOrigin = origin - (Vector2) guard.transform.position;
@@ -215,6 +217,36 @@ public class FloorManager : MonoBehaviour
         float minDepth = guard.GetComponent<CircleCollider2D>().radius * guard.transform.localScale.x + sigma;
 
         Vector2 offset = (Vector2) guard.transform.position + minDepth * guardToOrigin.normalized;
+        RaycastHit2D hit = Physics2D.Linecast(offset, origin);
+        return (hit.collider == player.GetComponent<CircleCollider2D>());
+    }
+
+    private void CheckGoalRevealed()
+    {
+        foreach (Wave wave in waves)
+        {
+            if (isRevealedGoal(goal, wave))
+            {
+                Vector2 goalToOrigin = wave.getOrigin() - goal.transform.position;
+                float distance = wave.getTime() / (Wave.scale * wave.getSpeed());
+                // constrain how long to flash so character doesn't stay visible forever
+                if (distance >= goalToOrigin.magnitude && distance <= 1.25 * goalToOrigin.magnitude)
+                {
+                    goal.GetComponent<HiddenObject>().Flash();
+                }
+            }
+        }
+    }
+
+    bool isRevealedGoal(Goal goal, Wave wave)
+    {
+        Vector2 origin = wave.getOrigin();
+        Vector2 goalToOrigin = origin - (Vector2) goal.transform.position;
+        // so that we don't collide with ourselves
+        float sigma = .05f;
+        float minDepth = goal.GetComponent<CircleCollider2D>().radius * goal.transform.localScale.x + sigma;
+
+        Vector2 offset = (Vector2) goal.transform.position + minDepth * goalToOrigin.normalized;
         RaycastHit2D hit = Physics2D.Linecast(offset, origin);
         return (hit.collider == player.GetComponent<CircleCollider2D>());
     }
@@ -232,6 +264,6 @@ public class FloorManager : MonoBehaviour
         cooldownTimer -= Time.deltaTime;
         UpdateFloorTiles();
         UpdateGuardReveals();
-
+        CheckGoalRevealed();
     }
 }

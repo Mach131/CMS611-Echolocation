@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 916884694396294852}
   - component: {fileID: 7042916532544584728}
   - component: {fileID: 8327188136271439771}
+  - component: {fileID: 517845813308413817}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -110,7 +111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05f5e3a75ff808442b41a0d6065914d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideTime: 0.3
 --- !u!114 &8327188136271439771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,3 +127,17 @@ MonoBehaviour:
   - {x: 0, y: 4}
   - {x: 0, y: -2}
   speed: 0.01
+--- !u!114 &517845813308413817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7892610393936741567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e9d470935bd9b42a28e6d2e1a025b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugVisibility: 0
+  hideTime: 0.3

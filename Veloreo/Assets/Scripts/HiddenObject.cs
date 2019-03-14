@@ -9,8 +9,10 @@ using UnityEngine;
 public class HiddenObject : MonoBehaviour
 {
     public bool debugVisibility = false;
-    public Color normalColor;
-    public Color visibleColor;
+
+    [SerializeField]
+    private float hideTime = .3f;
+    private float timeWaiting;
 
     private SpriteRenderer rend;
 
@@ -33,6 +35,7 @@ public class HiddenObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        timeWaiting = hideTime + 1f;
         rend = GetComponent<SpriteRenderer>();
         setLocalVisibility(debugVisibility);
     }
@@ -43,7 +46,26 @@ public class HiddenObject : MonoBehaviour
     /// <param name="visible">Whether or not the object should be visible on a black background</param>
     private void setLocalVisibility(bool visible)
     {
-        rend.color = visible ? visibleColor : normalColor;
+        rend.enabled = visible;
+    }
+
+    public void Flash()
+    {
+        timeWaiting = 0;
+        rend.enabled = true;
+    }
+
+    private void Update()
+    {
+        if (timeWaiting < hideTime)
+        {
+            timeWaiting += Time.deltaTime;
+        }
+
+        if (timeWaiting >= hideTime)
+        {
+            rend.enabled = false || debugVisibility;
+        }
     }
 
     // Add visibility method to static delegate
