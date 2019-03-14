@@ -164,13 +164,15 @@ public class PlayerMovement : MonoBehaviour
         float yDir = guard.transform.position.y - transform.position.y;
         Vector2 dir = new Vector2(xDir, yDir).normalized;
 
-        // find distance to stop intersection
-        CircleCollider2D playerCollider = GetComponent<CircleCollider2D>();
-        CircleCollider2D guardCollider = guard.GetComponent<CircleCollider2D>();
-        // this relies on the sprites being a circle 
+        //// find distance to stop intersection
+        // CircleCollider2D playerCollider = GetComponent<CircleCollider2D>();
+        // CircleCollider2D guardCollider = guard.GetComponent<CircleCollider2D>();
+        //// this relies on the sprites being a circle 
 
-        // TODO: generalize collison more
-        float distance = (playerCollider.radius + guardCollider.radius) * transform.localScale.x;
+        //// TODO: generalize collison more
+        //float distance = (playerCollider.radius + guardCollider.radius) * transform.localScale.x;
+
+        float distance = playerHalfSize.magnitude + guard.Radius;
         return distance * dir;
     }
 
