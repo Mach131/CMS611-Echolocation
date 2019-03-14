@@ -16,6 +16,7 @@ public class PlayerData : MonoBehaviour
     public delegate void GameStateEvent();
     public event GameStateEvent onDeath;
 
+    public float iFrameSeconds;
     [SerializeField]
     private string failSceneName = "";
 
@@ -24,6 +25,7 @@ public class PlayerData : MonoBehaviour
     private const int maximumHealth = 5;
 
     private HealthDisplay healthDisplay;
+    private bool isVulnerable;
 
     //// Public methods
 
@@ -34,12 +36,18 @@ public class PlayerData : MonoBehaviour
     /// <param name="damage">The amount to lower the player's health by</param>
     public void doDamage(int damage)
     {
-        if (currentHealth > 0)
+        if (currentHealth > 0 && isVulnerable)
         {
             currentHealth = Mathf.Max(currentHealth - damage, 0);
 
+            //grant invincibility
+            StartCoroutine(giveInvincibility(iFrameSeconds));
+
             //change health display on canvas
-            healthDisplay.changeHealthDisplay();
+            if (healthDisplay != null)
+            {
+                healthDisplay.changeHealthDisplay();
+            }
 
             if (currentHealth == 0)
             {
@@ -76,5 +84,18 @@ public class PlayerData : MonoBehaviour
     {
         currentHealth = maximumHealth;
         healthDisplay = FindObjectOfType<HealthDisplay>();
+        isVulnerable = true;
+    }
+
+    /// <summary>
+    /// Make the player invincible for a set period of time.
+    /// </summary>
+    /// <param name="seconds">The time in seconds for which the player cannot take damage</param>
+    /// <returns>I don't know how IEnumorators work tbh</returns>
+    private IEnumerator giveInvincibility(float seconds)
+    {
+        isVulnerable = false;
+        yield return new WaitForSeconds(seconds);
+        isVulnerable = true;
     }
 }
