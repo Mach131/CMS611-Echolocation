@@ -105,8 +105,9 @@ public class PlayerMovement : MonoBehaviour
             handleGoalCollision(goal);
         }
 
+        //hitting a guard; prevent if currently in i-frames to avoid stunlock
         Guard guard = collision.gameObject.GetComponent<Guard>();
-        if (guard != null)
+        if (guard != null && playerData.IsVulnerable)
         {
             handleGuardCollision(guard);
         }

@@ -24,9 +24,8 @@ public class PlayerData : MonoBehaviour
     private const int maximumHealth = 5;
 
     private HealthDisplay healthDisplay;
-    private bool isVulnerable;
+    public bool IsVulnerable { get; private set; }
 
-    //// Public methods
 
     /// <summary>
     /// Do damage to the player and update their health accordingly. If the player's
@@ -36,7 +35,7 @@ public class PlayerData : MonoBehaviour
     /// <param name="invincibleTime">The time for which the player cannot be hurt again</param>
     public void doDamage(int damage, float invincibleTime)
     {
-        if (currentHealth > 0 && isVulnerable)
+        if (currentHealth > 0 && IsVulnerable)
         {
             currentHealth = Mathf.Max(currentHealth - damage, 0);
 
@@ -93,7 +92,7 @@ public class PlayerData : MonoBehaviour
     {
         currentHealth = maximumHealth;
         healthDisplay = FindObjectOfType<HealthDisplay>();
-        isVulnerable = true;
+        IsVulnerable = true;
     }
 
     /// <summary>
@@ -103,8 +102,8 @@ public class PlayerData : MonoBehaviour
     /// <returns>I don't know how IEnumorators work tbh</returns>
     private IEnumerator giveInvincibility(float seconds)
     {
-        isVulnerable = false;
+        IsVulnerable = false;
         yield return new WaitForSeconds(seconds);
-        isVulnerable = true;
+        IsVulnerable = true;
     }
 }
