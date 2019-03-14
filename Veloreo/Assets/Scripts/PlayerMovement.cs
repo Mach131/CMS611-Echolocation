@@ -67,7 +67,8 @@ public class PlayerMovement : MonoBehaviour
     {
         canMove = true;
 
-        playerHalfSize = GetComponent<SpriteRenderer>().sprite.bounds.extents * (Vector2) transform.lossyScale;
+        Collider2D coll2D = GetComponent<Collider2D>();
+        playerHalfSize = coll2D != null ? GetComponent<Collider2D>().bounds.extents : GetComponent<Collider>().bounds.extents;
         playerData = GetComponent<PlayerData>();
     }
 
