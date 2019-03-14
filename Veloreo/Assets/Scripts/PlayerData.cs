@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,6 +36,10 @@ public class PlayerData : MonoBehaviour
         if (currentHealth > 0)
         {
             currentHealth = Mathf.Max(currentHealth - damage, 0);
+
+            //change health display on canvas
+            FindObjectOfType<HealthDisplay>().changeHealthDisplay();
+
             if (currentHealth == 0)
             {
                 onDeath?.Invoke(); //apparently this lets it only happen if it's not null
@@ -43,6 +47,7 @@ public class PlayerData : MonoBehaviour
             }
         }
     }
+
 
     //// Observers
 
