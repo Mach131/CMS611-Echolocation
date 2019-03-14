@@ -111,7 +111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb7b532a6a64ae942ada3e5a97609408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iFrameSeconds: 1
   failSceneName: FailScene
 --- !u!114 &1667557654944102024
 MonoBehaviour:
@@ -127,8 +126,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   wallAdjustmentAmount: 0.1
-  guardAdjusmentFactor: 1.05
+  guardAdjusmentFactor: 1.15
   collisionPauseTime: 0.5
+  guardCollisionInvincibility: 1
 --- !u!50 &940179845
 Rigidbody2D:
   serializedVersion: 4
