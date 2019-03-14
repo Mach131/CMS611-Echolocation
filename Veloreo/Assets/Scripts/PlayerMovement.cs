@@ -17,10 +17,13 @@ public class PlayerMovement : MonoBehaviour
     private float guardAdjusmentFactor = 1.05f;
     [SerializeField]
     private float collisionPauseTime = 0.5f;
+    [SerializeField]
+    private float guardCollisionInvincibility = 1;
 
     private bool canMove;
     private float moveEnableTimer;
     private Vector2 playerHalfSize;
+    private PlayerData playerData;
 
     private float timeAdjustedSpeed
     {
@@ -65,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
         canMove = true;
 
         playerHalfSize = GetComponent<SpriteRenderer>().sprite.bounds.extents * (Vector2) transform.lossyScale;
+        playerData = GetComponent<PlayerData>();
     }
 
     // Called every frame
@@ -115,13 +119,11 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="wall">The wall that the player came in contact with</param>
     private void handleWallCollision(Wall wall)
     {
-        //TODO: change health, i-frames?
-
         //push the player back a bit so they're not just stuck in the wall
         disableMovement(collisionPauseTime);
         Vector2 pushback = getWallPushbackDirection(wall) * getWallPushbackAmount(wall);
         transform.position = getWallPushbackOrigin(wall) + pushback;
-        GetComponent<PlayerData>().doDamage(1);
+        playerData.doDamage(1);
     }
 
     /// <summary>
@@ -145,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
         disableMovement(collisionPauseTime);
         Vector3 pushback = getGuardPushback(guard);
         transform.position = guard.transform.position - guardAdjusmentFactor * pushback;
-        GetComponent<PlayerData>().doDamage(1);
+        playerData.doDamage(1, guardCollisionInvincibility);
     }
 
     /// <summary>
@@ -225,8 +227,6 @@ public class PlayerMovement : MonoBehaviour
         Vector2 wallPosition = wall.transform.position;
 
         float wallHalfSize = wall.getThickness() / 2;
-
-        //TODO: account for pushback adjustment factor
 
         switch (wall.getOrientation())
         {

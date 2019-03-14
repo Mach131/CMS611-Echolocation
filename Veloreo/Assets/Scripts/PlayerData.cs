@@ -16,7 +16,6 @@ public class PlayerData : MonoBehaviour
     public delegate void GameStateEvent();
     public event GameStateEvent onDeath;
 
-    public float iFrameSeconds;
     [SerializeField]
     private string failSceneName = "";
 
@@ -34,14 +33,15 @@ public class PlayerData : MonoBehaviour
     /// health drops to zero, the functions subscribed to onDeath are called.
     /// </summary>
     /// <param name="damage">The amount to lower the player's health by</param>
-    public void doDamage(int damage)
+    /// <param name="invincibleTime">The time for which the player cannot be hurt again</param>
+    public void doDamage(int damage, float invincibleTime)
     {
         if (currentHealth > 0 && isVulnerable)
         {
             currentHealth = Mathf.Max(currentHealth - damage, 0);
 
             //grant invincibility
-            StartCoroutine(giveInvincibility(iFrameSeconds));
+            StartCoroutine(giveInvincibility(invincibleTime));
 
             //change health display on canvas
             if (healthDisplay != null)
@@ -55,6 +55,15 @@ public class PlayerData : MonoBehaviour
                 SceneManager.LoadScene(failSceneName);
             }
         }
+    }
+
+    /// <summary>
+    /// Overload with default value of no invincibility time
+    /// </summary>
+    /// <param name="damage">The amount to lower the player's health by</param>
+    public void doDamage(int damage)
+    {
+        doDamage(damage, 0);
     }
 
 
