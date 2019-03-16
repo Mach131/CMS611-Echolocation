@@ -22,7 +22,8 @@ public class FloorManager : MonoBehaviour
 
     [SerializeField]
     private int wavesRemaining;
-    private const int maximumWaves = 10;
+    public static int maximumWaves = 10;
+    private WaveText waveText;
 
     /// <summary>
     /// Describes an wave on the floor
@@ -81,6 +82,7 @@ public class FloorManager : MonoBehaviour
         {
             return this.time;
         }
+
     }
     
     void Start()
@@ -89,6 +91,7 @@ public class FloorManager : MonoBehaviour
         guards = FindObjectsOfType<Guard>();
         goal = FindObjectOfType<Goal>();
         wavesRemaining = maximumWaves;
+        waveText = GameObject.Find("WaveCounter").GetComponent<WaveText>();
     }
 
     /// <summary>
@@ -260,6 +263,7 @@ public class FloorManager : MonoBehaviour
             Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
             StartCoroutine(CreateWave(playerPos2));
             wavesRemaining--;
+            waveText.changeTextDisplay(wavesRemaining);
         }
         cooldownTimer -= Time.deltaTime;
         UpdateFloorTiles();
