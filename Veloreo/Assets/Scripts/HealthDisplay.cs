@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,14 +6,18 @@ using UnityEngine;
 /// Contains actions that control the display of the health bar UI
 /// </summary>
 public class HealthDisplay : MonoBehaviour
-{   
+{
     //refers to health cubes in UI
-    public string[] healthTags = { "health0", "health1", "health2", "health3", "health4" };
+    public string[] healthNames = { "Health (0)", "Health (1)", "Health (2)", "Health (3)", "Health (4)" };
+    public GameObject[] unitList;
+    public int livesLeft = 5;
 
     // Start is called before the first frame update
     void Start()
     {
         gameObject.SetActive(true);
+        unitList = GameObject.FindGameObjectsWithTag("health0");
+
     }
 
     // Update is called once per frame
@@ -27,9 +31,13 @@ public class HealthDisplay : MonoBehaviour
     /// </summary>
     public void changeHealthDisplay()
     {
-        if(gameObject.tag == healthTags[FindObjectOfType<PlayerData>().getHealth()])
-        {
-            gameObject.SetActive(false);
+        livesLeft--;
+        foreach (GameObject i in unitList)
+        { 
+            if (i.name == healthNames[livesLeft])
+            {
+                i.SetActive(false);
+            }
         }
     }
 }
