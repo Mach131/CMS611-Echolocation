@@ -281,7 +281,7 @@ public class FloorManager : MonoBehaviour
                     resistance = 30f;
 
                     StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
-
+                    vibrateString(height, speed, duration);
                     break;
                 case 5:
                     height = .2f;
@@ -289,6 +289,7 @@ public class FloorManager : MonoBehaviour
                     duration = 6f;
                     resistance = 500f;
                     StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+                    vibrateString(height, speed, duration);
                     break;
                 default:
                     break;
@@ -302,10 +303,10 @@ public class FloorManager : MonoBehaviour
 
     }
 
-    private void vibrateString()
+    private void vibrateString(float height, float speed, float duration)
     {
         GameObject playerString = GameObject.FindGameObjectWithTag("string");
-        playerString.GetComponent<StringWave>().startVibration();
+        playerString.GetComponent<StringWave>().startVibration(height, speed, duration);
     }
 
     void Update()
@@ -316,8 +317,7 @@ public class FloorManager : MonoBehaviour
             //Vector3 playerPos3 = player.transform.position;
             //Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
             //StartCoroutine(CreateWave(playerPos2));
-            makeWaveByPitch(5);
-            vibrateString();
+            makeWaveByPitch(1);
             //wavesRemaining--;
             //waveText.changeTextDisplay(wavesRemaining);
         }

@@ -139,4 +139,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593abb487c6ab3a4b99145e1191027f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vibrationDuration: 10
+  vibrationDuration: 100
