@@ -19,6 +19,7 @@ public class FloorManager : MonoBehaviour
     private Guard[] guards;
     private List<Wave> waves = new List<Wave>();
     private Goal goal;
+    private GameObject playerString;
     private float cooldownTimer = 0f;
 
     [SerializeField]
@@ -97,6 +98,7 @@ public class FloorManager : MonoBehaviour
         goal = FindObjectOfType<Goal>();
         wavesRemaining = maximumWaves;
         waveText = GameObject.Find("WaveCounter").GetComponent<WaveText>();
+        playerString = GameObject.FindGameObjectWithTag("string");
     }
 
     /// <summary>
@@ -305,19 +307,44 @@ public class FloorManager : MonoBehaviour
 
     private void vibrateString(float height, float speed, float duration)
     {
-        GameObject playerString = GameObject.FindGameObjectWithTag("string");
         playerString.GetComponent<StringWave>().startVibration(height, speed, duration);
+    }
+
+    private bool clickedOnWave()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            int layerMask = 1 << 10;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                if (hit.collider.tag == "string")
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private bool shouldMakeWave()
+    {
+        bool noConstraints = cooldownTimer <= 0 && wavesRemaining > 0;
+        bool playerActed = Input.GetKeyDown(KeyCode.Space) || clickedOnWave();
+        return noConstraints && playerActed;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && cooldownTimer <= 0 && wavesRemaining > 0)
+        if (shouldMakeWave())
         {
             //cooldownTimer = cooldownLengthSeconds;
             //Vector3 playerPos3 = player.transform.position;
             //Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
             //StartCoroutine(CreateWave(playerPos2));
-            makeWaveByPitch(1);
+            makeWaveByPitch(5);
             //wavesRemaining--;
             //waveText.changeTextDisplay(wavesRemaining);
         }

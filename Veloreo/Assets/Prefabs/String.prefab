@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 8356286802560632971}
   - component: {fileID: 8356286802560632970}
   - component: {fileID: 8356286802560632980}
-  m_Layer: 0
+  - component: {fileID: 182235782852001182}
+  m_Layer: 10
   m_Name: String
   m_TagString: string
   m_Icon: {fileID: 0}
@@ -140,3 +141,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vibrationDuration: 100
+--- !u!65 &182235782852001182
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8356286802560632969}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.1, y: 0.5, z: 0.1}
+  m_Center: {x: 2.5, y: 0, z: 0}
