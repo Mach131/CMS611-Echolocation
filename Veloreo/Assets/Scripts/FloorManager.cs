@@ -7,9 +7,10 @@ public class FloorManager : MonoBehaviour
     public GameObject floorTile;
     public GameObject player;
     public int boardSize;
-    public const float defaultWaveHeight = 1f;
-    public const float defaultWaveSpeed = .02f;
-    public const float defaultWaveDuration = 5f;
+    public const float defaultWaveHeight = 1f; //1
+    public const float defaultWaveSpeed = .02f; //.02
+    public const float defaultWaveDuration = 5f; //5
+    public const float defaultFallOffResistance = 70f; //70
     public float betweenWaves = .3f;
     public float distanceFrom2D = .6f;
     public float cooldownLengthSeconds = 2f;
@@ -35,14 +36,16 @@ public class FloorManager : MonoBehaviour
         private float waveHeight = 1f;
         private float waveSpeed = .02f;
         private float waveDuration = 5f;
+        private float fallOffResistance = 70f;
         public const float scale = 50.4f;
 
-        public Wave(Vector2 position, float height, float speed, float duration)
+        public Wave(Vector2 position, float height, float speed, float duration, float resistance = 70f)
         {
             this.origin = position;
             this.waveHeight = height;
             this.waveSpeed = speed;
             this.waveDuration = duration;
+            this.fallOffResistance = resistance;
         }
 
         public void incrementTime(float delta)
@@ -53,7 +56,9 @@ public class FloorManager : MonoBehaviour
         public float WaveFunction(float x, float y)
         {
             float distFromRipple = Mathf.Abs(this.time - Mathf.Sqrt(x * x + y * y));
-            return 1 / Mathf.Pow((1 + distFromRipple), 3);
+            //return 1 / (Mathf.Pow((1 + distFromRipple), 3));
+            //return Mathf.Pow(2.718f, -distFromRipple / c);
+            return Mathf.Pow(2.718f, -(this.time /(this.fallOffResistance*this.waveSpeed))) / (Mathf.Pow(1 + distFromRipple, 3));
         }
 
         public Vector3 getOrigin()
@@ -113,13 +118,13 @@ public class FloorManager : MonoBehaviour
         }
     }
 
-    IEnumerator CreateWave(Vector2 position, float height = defaultWaveHeight, float speed = defaultWaveSpeed, float duration = defaultWaveDuration)
+    IEnumerator CreateWave(Vector2 position, float height = defaultWaveHeight, float speed = defaultWaveSpeed, float duration = defaultWaveDuration, float resistance = defaultFallOffResistance)
     {
-        Wave w = new Wave(position, height, speed, duration);
+        Wave w = new Wave(position, height, speed, duration, resistance);
         waves.Add(w);
 
         yield return new WaitForSeconds(betweenWaves);
-        Wave w2 = new Wave(position, height, speed, duration);
+        Wave w2 = new Wave(position, height, speed, duration, resistance);
         waves.Add(w2);
 
         yield return new WaitForSeconds(w.getDuration());
@@ -148,7 +153,8 @@ public class FloorManager : MonoBehaviour
                 {
                     w.incrementTime(w.getSpeed() * Time.deltaTime);
                     Vector3 waveOrigin = w.getOrigin();
-                    z += w.getHeight() * w.WaveFunction(x - waveOrigin.x, y - waveOrigin.y);
+                    z += w.getHeight() * w.WaveFunction(x - waveOrigin.x, y - waveOrigin.y); //+=
+
                 }
             }
 
@@ -253,17 +259,60 @@ public class FloorManager : MonoBehaviour
         RaycastHit2D hit = Physics2D.Linecast(offset, origin);
         return (hit.collider == player.GetComponent<CircleCollider2D>());
     }
+    
+    void makeWaveByPitch(int pitchNum)
+    {
+        if (cooldownTimer <= 0 && wavesRemaining > 0)
+        {
+            Vector3 playerPos3 = player.transform.position;
+            Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
+
+            float height = defaultWaveHeight;
+            float speed = defaultWaveSpeed;
+            float duration = defaultWaveDuration;
+            float resistance = defaultFallOffResistance;
+
+            switch (pitchNum)
+            {
+                case 1:
+                    height = 7f;
+                    speed = .03f;
+                    duration = 5f;
+                    resistance = 30f;
+
+                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+
+                    break;
+                case 5:
+                    height = .2f;
+                    speed = .02f;
+                    duration = 6f;
+                    resistance = 500f;
+                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+                    break;
+                default:
+                    break;
+            }
+
+            //Update some variables
+            cooldownTimer = cooldownLengthSeconds;
+            wavesRemaining--;
+            waveText.changeTextDisplay(wavesRemaining);
+        }
+
+    }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && cooldownTimer <= 0 && wavesRemaining > 0)
         {
-            cooldownTimer = cooldownLengthSeconds;
-            Vector3 playerPos3 = player.transform.position;
-            Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
-            StartCoroutine(CreateWave(playerPos2));
-            wavesRemaining--;
-            waveText.changeTextDisplay(wavesRemaining);
+            //cooldownTimer = cooldownLengthSeconds;
+            //Vector3 playerPos3 = player.transform.position;
+            //Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
+            //StartCoroutine(CreateWave(playerPos2));
+            makeWaveByPitch(5);
+            //wavesRemaining--;
+            //waveText.changeTextDisplay(wavesRemaining);
         }
         cooldownTimer -= Time.deltaTime;
         UpdateFloorTiles();

@@ -656,6 +656,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 9199962760765000557, guid: a956c78db04c80a49ac84268e8ecd95e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2246665706450441958, guid: a956c78db04c80a49ac84268e8ecd95e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1595,6 +1600,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 9199962760765000557, guid: a956c78db04c80a49ac84268e8ecd95e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2246665706450441958, guid: a956c78db04c80a49ac84268e8ecd95e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1839,6 +1849,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9199962760765000557, guid: a956c78db04c80a49ac84268e8ecd95e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2246665706450441958, guid: a956c78db04c80a49ac84268e8ecd95e,
         type: 3}
@@ -2503,6 +2518,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Health
       objectReference: {fileID: 0}
+    - target: {fileID: 8285215843371103373, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
+        type: 3}
+      propertyPath: m_TagString
+      value: health0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8285215844550868963, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
+        type: 3}
+      propertyPath: m_TagString
+      value: health0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8285215844811895297, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
+        type: 3}
+      propertyPath: m_TagString
+      value: health0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8285215844811895297, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8285215843364801680, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
+        type: 3}
+      propertyPath: m_TagString
+      value: health0
+      objectReference: {fileID: 0}
     - target: {fileID: 8285215844216085178, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2557,31 +2597,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8285215843364801680, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
-        type: 3}
-      propertyPath: m_TagString
-      value: health0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8285215843371103373, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
-        type: 3}
-      propertyPath: m_TagString
-      value: health0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8285215844550868963, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
-        type: 3}
-      propertyPath: m_TagString
-      value: health0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8285215844811895297, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
-        type: 3}
-      propertyPath: m_TagString
-      value: health0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8285215844811895297, guid: 4f816e6ffd8cdb6499cc80e395ffe569,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8285215844955691662, guid: 4f816e6ffd8cdb6499cc80e395ffe569, type: 3}
