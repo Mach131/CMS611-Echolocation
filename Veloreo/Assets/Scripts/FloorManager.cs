@@ -302,6 +302,12 @@ public class FloorManager : MonoBehaviour
 
     }
 
+    private void vibrateString()
+    {
+        GameObject playerString = GameObject.FindGameObjectWithTag("string");
+        playerString.GetComponent<StringWave>().startVibration();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && cooldownTimer <= 0 && wavesRemaining > 0)
@@ -311,6 +317,7 @@ public class FloorManager : MonoBehaviour
             //Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
             //StartCoroutine(CreateWave(playerPos2));
             makeWaveByPitch(5);
+            vibrateString();
             //wavesRemaining--;
             //waveText.changeTextDisplay(wavesRemaining);
         }

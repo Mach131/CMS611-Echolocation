@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - pablo_wall
+  - health3
+  - health1
+  - health2
+  - health4
+  - health0
+  - string
   layers:
   - Default
   - TransparentFX
