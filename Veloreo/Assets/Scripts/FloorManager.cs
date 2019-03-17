@@ -262,7 +262,7 @@ public class FloorManager : MonoBehaviour
         return (hit.collider == player.GetComponent<CircleCollider2D>());
     }
     
-    void makeWaveByPitch(int pitchNum)
+    void makeWaveByPitch(float pitchNum)
     {
         if (cooldownTimer <= 0 && wavesRemaining > 0)
         {
@@ -344,7 +344,7 @@ public class FloorManager : MonoBehaviour
             //Vector3 playerPos3 = player.transform.position;
             //Vector2 playerPos2 = new Vector2(playerPos3.x, playerPos3.y);
             //StartCoroutine(CreateWave(playerPos2));
-            makeWaveByPitch(5);
+            makeWaveByPitch(SliderControls.getValue());
             //wavesRemaining--;
             //waveText.changeTextDisplay(wavesRemaining);
         }
