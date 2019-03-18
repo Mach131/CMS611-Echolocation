@@ -6,11 +6,13 @@ public class FloorManager : MonoBehaviour
 {
     public GameObject floorTile;
     public GameObject player;
+    public WaveSound waveSoundPlayer;
     public int boardSize;
     public const float defaultWaveHeight = 1f; //1
     public const float defaultWaveSpeed = .02f; //.02
     public const float defaultWaveDuration = 5f; //5
     public const float defaultFallOffResistance = 70f; //70
+    public const float defaultSoundFrequency = 440f; //440
     public float betweenWaves = .3f;
     public float distanceFrom2D = .6f;
     public float cooldownLengthSeconds = 2f;
@@ -120,10 +122,16 @@ public class FloorManager : MonoBehaviour
         }
     }
 
-    IEnumerator CreateWave(Vector2 position, float height = defaultWaveHeight, float speed = defaultWaveSpeed, float duration = defaultWaveDuration, float resistance = defaultFallOffResistance)
+    IEnumerator CreateWave(Vector2 position, float height = defaultWaveHeight, float speed = defaultWaveSpeed,
+        float duration = defaultWaveDuration, float resistance = defaultFallOffResistance, float frequency = defaultSoundFrequency)
     {
         Wave w = new Wave(position, height, speed, duration, resistance);
         waves.Add(w);
+
+        if (waveSoundPlayer != null)
+        {
+            waveSoundPlayer.playSineWave(frequency, cooldownLengthSeconds);
+        }
 
         yield return new WaitForSeconds(betweenWaves);
         Wave w2 = new Wave(position, height, speed, duration, resistance);
@@ -273,6 +281,7 @@ public class FloorManager : MonoBehaviour
             float speed = defaultWaveSpeed;
             float duration = defaultWaveDuration;
             float resistance = defaultFallOffResistance;
+            float frequency = defaultSoundFrequency;
 
             switch (pitchNum)
             {
@@ -281,8 +290,9 @@ public class FloorManager : MonoBehaviour
                     speed = .03f;
                     duration = 5f;
                     resistance = 25f;
+                    frequency = 466.2f;
 
-                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency));
                     vibrateString(height-4, speed, duration);
                     break;
                 case 2:
@@ -290,7 +300,9 @@ public class FloorManager : MonoBehaviour
                     speed = .025f;
                     duration = 5.5f;
                     resistance = 60f;
-                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+                    frequency = 392.0f;
+
+                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency));
                     vibrateString(height, speed, duration);
                     break;
                 case 3:
@@ -298,7 +310,9 @@ public class FloorManager : MonoBehaviour
                     speed = .0225f;
                     duration = 5.5f;
                     resistance = 80f;
-                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+                    frequency = 349.2f;
+
+                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency));
                     vibrateString(height, speed, duration);
                     break;
                 case 4:
@@ -306,7 +320,9 @@ public class FloorManager : MonoBehaviour
                     speed = .02f;
                     duration = 6f;
                     resistance = 200f;
-                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+                    frequency = 311.1f;
+
+                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency));
                     vibrateString(height, speed, duration);
                     break;
                 case 5:
@@ -314,7 +330,9 @@ public class FloorManager : MonoBehaviour
                     speed = .015f;
                     duration = 6f;
                     resistance = 400f;
-                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+                    frequency = 261.6f;
+
+                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency));
                     vibrateString(height, speed, duration);
                     break;
                 default:
