@@ -130,7 +130,9 @@ public class FloorManager : MonoBehaviour
 
         if (waveSoundPlayer != null)
         {
-            waveSoundPlayer.playSineWave(frequency, cooldownLengthSeconds);
+            // Trying to ensure that the sound ends before another one can be made
+            float soundLength = Mathf.Max(0.1f, cooldownLengthSeconds - Time.deltaTime);
+            waveSoundPlayer.playSineWave(frequency, soundLength);
         }
 
         yield return new WaitForSeconds(betweenWaves);
