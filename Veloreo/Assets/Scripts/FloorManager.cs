@@ -24,7 +24,7 @@ public class FloorManager : MonoBehaviour
 
     [SerializeField]
     private int wavesRemaining;
-    public static int maximumWaves = 10;
+    public static int maximumWaves = 20;
     private WaveText waveText;
 
     /// <summary>
@@ -277,19 +277,43 @@ public class FloorManager : MonoBehaviour
             switch (pitchNum)
             {
                 case 1:
-                    height = 7f;
+                    height = 6f;
                     speed = .03f;
                     duration = 5f;
-                    resistance = 30f;
+                    resistance = 25f;
 
+                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+                    vibrateString(height-4, speed, duration);
+                    break;
+                case 2:
+                    height = 1.2f;
+                    speed = .025f;
+                    duration = 5.5f;
+                    resistance = 60f;
+                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+                    vibrateString(height, speed, duration);
+                    break;
+                case 3:
+                    height = .8f;
+                    speed = .0225f;
+                    duration = 5.5f;
+                    resistance = 80f;
+                    StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
+                    vibrateString(height, speed, duration);
+                    break;
+                case 4:
+                    height = .3f;
+                    speed = .02f;
+                    duration = 6f;
+                    resistance = 200f;
                     StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
                     vibrateString(height, speed, duration);
                     break;
                 case 5:
                     height = .2f;
-                    speed = .02f;
+                    speed = .015f;
                     duration = 6f;
-                    resistance = 500f;
+                    resistance = 400f;
                     StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance));
                     vibrateString(height, speed, duration);
                     break;

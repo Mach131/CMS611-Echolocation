@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4513864, g: 0.50091475, b: 0.5725303, a: 1}
+  m_IndirectSpecularColor: {r: 0.45138687, g: 0.5009151, b: 0.5725312, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -767,13 +767,14 @@ MonoBehaviour:
     the guards trying to catch you.
 
 
-    Instead, you must send out a sound wave by pressing the space bar. The wave will
-    propogate through the floor, and you will see its progress halt when the wave
-    hits a wall. In other words, the wave will show you the way.
+    Instead, you must send out a sound wave by selecting a pitch on the slider, and
+    then pressing the space bar or clicking on the string. The wave will propogate
+    through the floor, and you will see its progress halt when the wave hits a wall.
+    In other words, the wave will show you the way.
 
 
     Take care not to run into walls or guards; they pack a punch. You only have 5
-    lives and N chances to use your soundwaves, so be smart about the choices you
+    lives and 20 chances to use your soundwaves, so be smart about the choices you
     make.'
 --- !u!222 &1452926614
 CanvasRenderer:
