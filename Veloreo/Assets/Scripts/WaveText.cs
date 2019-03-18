@@ -1,7 +1,7 @@
-﻿using System.Collections;
+using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
 
 /// <summary>
 /// Controls text for the waves remaining display
@@ -17,6 +17,8 @@ public class WaveText : MonoBehaviour
         startingWaveAmount = (FloorManager.maximumWaves).ToString();
         textMesh = GetComponent<TextMeshProUGUI>();
         textMesh.text = startingWaveAmount + " waves remaining";
+        //position bottom left:
+        GetComponent<TextMeshProUGUI>().transform.position = new Vector3(252.0f, 50.0f, 0.0f);
     }
 
     /// <summary>
