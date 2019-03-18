@@ -292,7 +292,7 @@ public class FloorManager : MonoBehaviour
                     speed = .03f;
                     duration = 5f;
                     resistance = 25f;
-                    frequency = 466.2f;
+                    frequency = 392.06f;
 
                     StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency));
                     vibrateString(height-4, speed, duration);
@@ -302,7 +302,7 @@ public class FloorManager : MonoBehaviour
                     speed = .025f;
                     duration = 5.5f;
                     resistance = 60f;
-                    frequency = 392.0f;
+                    frequency = 329.66f;
 
                     StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency));
                     vibrateString(height, speed, duration);
@@ -312,7 +312,7 @@ public class FloorManager : MonoBehaviour
                     speed = .0225f;
                     duration = 5.5f;
                     resistance = 80f;
-                    frequency = 349.2f;
+                    frequency = 293.67f;
 
                     StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency));
                     vibrateString(height, speed, duration);
@@ -322,7 +322,7 @@ public class FloorManager : MonoBehaviour
                     speed = .02f;
                     duration = 6f;
                     resistance = 200f;
-                    frequency = 311.1f;
+                    frequency = 261.63f;
 
                     StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency));
                     vibrateString(height, speed, duration);
@@ -332,7 +332,7 @@ public class FloorManager : MonoBehaviour
                     speed = .015f;
                     duration = 6f;
                     resistance = 400f;
-                    frequency = 261.6f;
+                    frequency = 220.00f;
 
                     StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency));
                     vibrateString(height, speed, duration);
