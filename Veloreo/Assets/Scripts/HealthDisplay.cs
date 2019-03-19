@@ -11,13 +11,14 @@ public class HealthDisplay : MonoBehaviour
     public string[] healthNames = { "Health (0)", "Health (1)", "Health (2)", "Health (3)", "Health (4)" };
     public GameObject[] unitList;
     public int livesLeft = 5;
+    public static Vector3 currentPosition;
 
     // Start is called before the first frame update
     void Start()
     {
         gameObject.SetActive(true);
         unitList = GameObject.FindGameObjectsWithTag("health0");
-
+        currentPosition = gameObject.transform.position;
     }
 
     // Update is called once per frame

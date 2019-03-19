@@ -10,15 +10,14 @@ public class WaveText : MonoBehaviour
 {
     private TextMeshProUGUI textMesh;
     string startingWaveAmount;
-
+    int i = 0;
     // Start is called before the first frame update
     void Start()
     {
         startingWaveAmount = (FloorManager.maximumWaves).ToString();
         textMesh = GetComponent<TextMeshProUGUI>();
         textMesh.text = startingWaveAmount + " waves remaining";
-        //position bottom left:
-        GetComponent<TextMeshProUGUI>().transform.position = new Vector3(Screen.width * 1 / 4, Screen.height * 0.1f, 0);//(252.0f, 50.0f, 0.0f);
+        
     }
 
     /// <summary>
@@ -31,8 +30,18 @@ public class WaveText : MonoBehaviour
         textMesh.text = wavesRemaining.ToString() + " waves remaining";
     }
 
-    void Update()
+    void positionChange()
     {
 
+    }
+
+    void Update()
+    {
+        //extremely roundabout way to position bottom left:
+        if (i == 0)
+        {
+            GetComponent<TextMeshProUGUI>().transform.position = new Vector3(HealthDisplay.currentPosition.x*-21.5f, HealthDisplay.currentPosition.y*-10, 0);
+            i++;
+        }
     }
 }
