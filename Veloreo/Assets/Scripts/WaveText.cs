@@ -41,7 +41,6 @@ public class WaveText : MonoBehaviour
         if (i == 0)
         {
             GetComponent<TextMeshProUGUI>().transform.position = new Vector3(HealthDisplay.currentPosition.x*-21.5f, HealthDisplay.currentPosition.y*-10, 0);
-            Debug.Log(HealthDisplay.currentPosition);
             i++;
         }
     }
