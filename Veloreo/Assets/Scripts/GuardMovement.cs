@@ -21,7 +21,7 @@ public class GuardMovement : MonoBehaviour
         currentGoal = 0;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         moveTowards(positions[currentGoal]);
         updateCurrentGoal();
