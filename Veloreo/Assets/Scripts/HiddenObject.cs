@@ -14,7 +14,7 @@ public class HiddenObject : MonoBehaviour
     private float hideTime = .3f;
     private float timeWaiting;
 
-    private SpriteRenderer rend;
+    private Renderer rend;
 
     public delegate void VisibilityAction(bool visible);
     private static VisibilityAction setAllVisible;
@@ -36,7 +36,7 @@ public class HiddenObject : MonoBehaviour
     void Start()
     {
         timeWaiting = hideTime + 1f;
-        rend = GetComponent<SpriteRenderer>();
+        rend = GetComponent<Renderer>();
         setLocalVisibility(debugVisibility);
     }
 
