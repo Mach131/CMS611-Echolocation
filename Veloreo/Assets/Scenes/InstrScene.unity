@@ -770,7 +770,8 @@ MonoBehaviour:
     Instead, you must send out a sound wave by selecting a pitch on the slider, and
     then pressing the space bar or clicking on the string. The wave will propogate
     through the floor, and you will see its progress halt when the wave hits a wall.
-    In other words, the wave will show you the way.
+    In other words, the wave will show you the way. Waves also reveal <color=#ff0000>guards</color>
+    and the <color=#00ffff>tesseract</color>, which are hidden.
 
 
     Take care not to run into walls or guards, or you will lose a life. You only have
