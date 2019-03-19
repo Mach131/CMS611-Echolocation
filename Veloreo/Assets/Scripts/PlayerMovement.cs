@@ -150,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 pushback = getGuardPushback(guard);
         transform.position = guard.transform.position - guardAdjusmentFactor * pushback;
         playerData.doDamage(1, guardCollisionInvincibility);
+        guard.GetComponent<HiddenObject>().Flash();
     }
 
     /// <summary>
