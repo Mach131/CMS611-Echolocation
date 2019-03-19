@@ -40,7 +40,6 @@ public class WaveText : MonoBehaviour
         //extremely roundabout way to position bottom left:
         if (i == 0)
         {
-            HealthDisplay.TEST();
             GetComponent<TextMeshProUGUI>().transform.position = new Vector3(HealthDisplay.currentPosition.x*-21.5f, HealthDisplay.currentPosition.y*-10, 0);
             Debug.Log(HealthDisplay.currentPosition);
             i++;
