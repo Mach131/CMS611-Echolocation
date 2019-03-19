@@ -1,7 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls intro music
+/// </summary>
 public class IntroMusic : MonoBehaviour
 {
     [SerializeField]
@@ -14,6 +17,7 @@ public class IntroMusic : MonoBehaviour
     Vector3 mousePos;
     float mouseY;
 
+    static bool muted;
     //// Public Methods
 
     /// <summary>
@@ -27,20 +31,33 @@ public class IntroMusic : MonoBehaviour
         StartCoroutine(controlSineWave(durationSeconds));
     }
 
-    //// Private Methods
-
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        muted = false;
         InvokeRepeating("play", 0, 0.3f);
     }
-
+    /// <summary>
+    /// function to play music
+    /// </summary>
     private void play()
     {
+        if (!muted)
+        {
             mousePos = Input.mousePosition;
             mouseY = mousePos.y;
-        playSineWave(mouseY + 90.0f, 0.2f);
+            playSineWave(mouseY + 90.0f, 0.2f);
+            Debug.Log(muted);
+        }
+    }
+
+    /// <summary>
+    /// Toggles mute
+    /// </summary>
+    public void mute()
+    {
+        muted = !muted;
     }
     
     /// <summary>
