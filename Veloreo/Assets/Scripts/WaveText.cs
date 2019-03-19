@@ -18,7 +18,7 @@ public class WaveText : MonoBehaviour
         textMesh = GetComponent<TextMeshProUGUI>();
         textMesh.text = startingWaveAmount + " waves remaining";
         //position bottom left:
-        GetComponent<TextMeshProUGUI>().transform.position = new Vector3(Screen.width * 1 / 4, Screen.height * 0.1f, 0);//(252.0f, 50.0f, 0.0f);
+        GetComponent<TextMeshProUGUI>().transform.position = new Vector3(HealthDisplay.currentPosition.x+320, HealthDisplay.currentPosition.y+45, 0);
     }
 
     /// <summary>
