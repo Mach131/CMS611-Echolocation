@@ -254,6 +254,7 @@ public class FloorManager : MonoBehaviour
                 if (distance >= .9 * goalToOrigin.magnitude && distance <= 1.25 * goalToOrigin.magnitude)
                 {
                     goal.GetComponent<HiddenObject>().Flash();
+                    
                 }
             }
         }

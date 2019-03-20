@@ -58,6 +58,7 @@ public class HiddenObject : MonoBehaviour
         Color color = rend.material.color;
         color.a = 0;
         rend.material.color = color;
+
     }
 
     private void Update()

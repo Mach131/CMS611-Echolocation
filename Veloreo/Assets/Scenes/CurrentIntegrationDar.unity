@@ -3092,6 +3092,11 @@ PrefabInstance:
       propertyPath: nextSceneName
       value: WinScene
       objectReference: {fileID: 0}
+    - target: {fileID: 1478736043215255455, guid: 31111c73b9aec974cb170fa7d8890aa2,
+        type: 3}
+      propertyPath: hideTime
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1478736043215255452, guid: 31111c73b9aec974cb170fa7d8890aa2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 31111c73b9aec974cb170fa7d8890aa2, type: 3}
