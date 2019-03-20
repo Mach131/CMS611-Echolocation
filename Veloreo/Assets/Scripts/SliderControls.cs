@@ -16,10 +16,10 @@ public class SliderControls : MonoBehaviour
         floor = GameObject.Find("FloorManager").GetComponent<FloorManager>();
 
         pitchSlider = gameObject.GetComponent<Slider>();
-        pitchSlider.transform.position = new Vector3(650.0f, 20.0f, 0.0f);
+        //pitchSlider.transform.position = new Vector3(650.0f, 20.0f, 0.0f);
         pitchSlider.minValue = 1;
         pitchSlider.maxValue = 5;
-        pitchSlider.value = 5;
+        pitchSlider.value = 3;
         pitchSlider.wholeNumbers = true;
     }
 
