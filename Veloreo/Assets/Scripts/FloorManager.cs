@@ -316,7 +316,7 @@ public class FloorManager : MonoBehaviour
                     frequency = 392.06f;
 
                     StartCoroutine(CreateWave(playerPos2, height, speed, duration, resistance, frequency, .1f));
-                    vibrateString(height-7, speed, duration);
+                    vibrateString(height-7f, speed, duration+5);
                     break;
                 case 2:
                     height = 1.2f;
