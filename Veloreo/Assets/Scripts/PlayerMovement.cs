@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     private float moveEnableTimer;
     private Vector2 playerHalfSize;
     private PlayerData playerData;
+
+    private CollisionSound collisionSound;
 
     private float timeAdjustedSpeed
     {
@@ -70,6 +72,8 @@ public class PlayerMovement : MonoBehaviour
         Collider2D coll2D = GetComponent<Collider2D>();
         playerHalfSize = coll2D != null ? GetComponent<Collider2D>().bounds.extents : GetComponent<Collider>().bounds.extents;
         playerData = GetComponent<PlayerData>();
+
+        collisionSound = GameObject.Find("CollisionSoundPlayer").GetComponent<CollisionSound>();
     }
 
     // Called every frame
@@ -126,6 +130,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 pushback = getWallPushbackDirection(wall) * getWallPushbackAmount(wall);
         transform.position = getWallPushbackOrigin(wall) + pushback;
         playerData.doDamage(1);
+        collisionSound.collideSound();
     }
 
     /// <summary>
@@ -151,6 +156,7 @@ public class PlayerMovement : MonoBehaviour
         transform.position = guard.transform.position - guardAdjusmentFactor * pushback;
         playerData.doDamage(1, guardCollisionInvincibility);
         guard.GetComponent<HiddenObject>().Flash();
+        collisionSound.collideSound();
     }
 
     /// <summary>
