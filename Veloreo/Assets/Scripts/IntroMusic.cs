@@ -48,7 +48,6 @@ public class IntroMusic : MonoBehaviour
             mousePos = Input.mousePosition;
             mouseY = mousePos.y;
             playSineWave(mouseY + 90.0f, 0.2f);
-            Debug.Log(muted);
         }
     }
 
