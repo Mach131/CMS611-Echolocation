@@ -266,10 +266,27 @@ public class FloorManager : MonoBehaviour
         // so that we don't collide with ourselves
         float sigma = .05f;
         float minDepth = goal.GetComponent<CircleCollider2D>().radius * goal.transform.localScale.x + sigma;
+        Vector2 goalPos = goal.transform.position;
+        CircleCollider2D playerCollider = player.GetComponent<CircleCollider2D>();
+        Vector2 offset;
+        RaycastHit2D hit;
+        bool collided = false;
 
-        Vector2 offset = (Vector2) goal.transform.position + minDepth * goalToOrigin.normalized;
-        RaycastHit2D hit = Physics2D.Linecast(offset, origin);
-        return (hit.collider == player.GetComponent<CircleCollider2D>());
+        // check if we hit any corner of the player to make it more reliable
+        offset = goalPos + Vector2.up * minDepth;
+        hit = Physics2D.Linecast(offset, origin);
+        collided = collided || (hit.collider == playerCollider);
+        offset = goalPos + Vector2.down * minDepth;
+        hit = Physics2D.Linecast(offset, origin);
+        collided = collided || (hit.collider == playerCollider);
+        offset = goalPos + Vector2.right * minDepth;
+        hit = Physics2D.Linecast(offset, origin);
+        collided = collided || (hit.collider == playerCollider);
+        offset = goalPos + Vector2.left * minDepth;
+        hit = Physics2D.Linecast(offset, origin);
+        collided = collided || (hit.collider == playerCollider);
+
+        return collided;
     }
     
     void makeWaveByPitch(float pitchNum)
