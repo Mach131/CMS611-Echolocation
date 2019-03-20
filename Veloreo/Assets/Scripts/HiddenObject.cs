@@ -12,8 +12,7 @@ public class HiddenObject : MonoBehaviour
 
     [SerializeField]
     private float hideTime = .4f;
-    [SerializeField]
-    private float revealTime = .3f;
+    private float revealTime;
     private float timeWaiting;
      
     private Renderer rend;
@@ -39,6 +38,7 @@ public class HiddenObject : MonoBehaviour
     {
         timeWaiting = hideTime + 1f;
         rend = GetComponent<Renderer>();
+        revealTime = hideTime / 2.0f;
         setLocalVisibility(debugVisibility);
     }
 
@@ -66,7 +66,13 @@ public class HiddenObject : MonoBehaviour
         {
             timeWaiting += Time.deltaTime;
             Color color = rend.material.color;
-            color.a = timeWaiting / revealTime;
+            if (timeWaiting < revealTime)
+            {
+                color.a = timeWaiting / revealTime;
+            } else
+            {
+                color.a = (timeWaiting - revealTime) / revealTime;
+            }
             rend.material.color = color;
         }
 
