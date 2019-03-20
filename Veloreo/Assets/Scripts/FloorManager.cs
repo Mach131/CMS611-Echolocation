@@ -214,7 +214,7 @@ public class FloorManager : MonoBehaviour
                     Vector2 guardToOrigin = wave.getOrigin() - guard.transform.position;
                     float distance = wave.getTime() / (Wave.scale * wave.getSpeed());
                     // constrain how long to flash so character doesn't stay visible forever
-                    if (distance >= guardToOrigin.magnitude && distance <= 1.25*guardToOrigin.magnitude)
+                    if (distance >= .9 * guardToOrigin.magnitude && distance <= 1.25*guardToOrigin.magnitude)
                     {
                         guard.GetComponent<HiddenObject>().Flash();
                     }
@@ -251,7 +251,7 @@ public class FloorManager : MonoBehaviour
                 Vector2 goalToOrigin = wave.getOrigin() - goal.transform.position;
                 float distance = wave.getTime() / (Wave.scale * wave.getSpeed());
                 // constrain how long to flash so character doesn't stay visible forever
-                if (distance >= goalToOrigin.magnitude && distance <= 1.25 * goalToOrigin.magnitude)
+                if (distance >= .9 * goalToOrigin.magnitude && distance <= 1.25 * goalToOrigin.magnitude)
                 {
                     goal.GetComponent<HiddenObject>().Flash();
                 }
@@ -271,6 +271,10 @@ public class FloorManager : MonoBehaviour
         Vector2 offset;
         RaycastHit2D hit;
         bool collided = false;
+
+        offset = goalPos + goalToOrigin.normalized * minDepth;
+        hit = Physics2D.Linecast(offset, origin);
+        collided = collided || (hit.collider == playerCollider);
 
         // check if we hit any corner of the player to make it more reliable
         offset = goalPos + Vector2.up * minDepth;
